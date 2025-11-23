@@ -12,6 +12,7 @@ import javax.swing.JOptionPane;
  */
 public class Deposito extends javax.swing.JFrame {
     
+    private final CuentaService cuentaService = new CuentaService();
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Deposito.class.getName());
 
     /**
@@ -132,15 +133,53 @@ public class Deposito extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+                                     
+    String textoMonto = jTextField3.getText().trim();
 
+    if (textoMonto.isEmpty()) {
         JOptionPane.showMessageDialog(this,
-            "Operación realizada con éxito!",
-            "Atención!",
+                "Por favor, ingrese un monto.",
+                "Monto vacío",
+                JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+    double monto;
+    try {
+        monto = Double.parseDouble(textoMonto);
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(this,
+                "El monto debe ser un número válido.",
+                "Monto inválido",
+                JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    if (monto <= 0) {
+        JOptionPane.showMessageDialog(this,
+                "El monto debe ser mayor que cero.",
+                "Monto inválido",
+                JOptionPane.WARNING_MESSAGE);
+        return;
+    }
+
+    boolean ok = cuentaService.depositar(monto);
+
+    if (!ok) {
+        JOptionPane.showMessageDialog(this,
+                "Ocurrió un error al realizar el depósito.\n¿Hay un usuario logueado?",
+                "Error",
+                JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    JOptionPane.showMessageDialog(this,
+            "Depósito realizado con éxito.\nMonto: " + monto,
+            "Depósito exitoso",
             JOptionPane.INFORMATION_MESSAGE);
-        
-        new Menu().setVisible(true);
-        this.dispose();
+
+    new Menu().setVisible(true);
+    this.dispose();   
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed

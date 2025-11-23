@@ -11,14 +11,25 @@ import javax.swing.JOptionPane;
  */
 public class Saldo extends javax.swing.JFrame {
     
+    private final CuentaService cuentaService = new CuentaService();
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Saldo.class.getName());
 
     /**
      * Creates new form Saldo
      */
+    
+    
     public Saldo() {
         initComponents();
+        setLocationRelativeTo(null);
+        cargarSaldo();
     }
+
+    private void cargarSaldo() {
+        double saldo = cuentaService.obtenerSaldoActual();
+        jTextField3.setText(String.format("%.2f", saldo));
+    }
+
 
     /**
      * This method is called from within the constructor to initialize the form.

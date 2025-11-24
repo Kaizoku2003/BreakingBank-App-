@@ -182,45 +182,68 @@ public class Transferencia extends javax.swing.JFrame {
 
         // --- VALIDACIÓN DE FONDOS (Saldo suficiente) ---
         
-        double saldoActual = cuentaService.obtenerSaldoActual();
-        if (monto > saldoActual) {
-            JOptionPane.showMessageDialog(this,
-                    "No tiene fondos suficientes para realizar esta operación.\n\n" +
-                    "Saldo actual: Gs. " + String.format("%,.0f", saldoActual) + "\n" +
-                    "Monto a transferir: Gs. " + String.format("%,.0f", monto),
-                    "Saldo Insuficiente",
-                    JOptionPane.ERROR_MESSAGE);
-            return;
+        // Validación de saldo
+        Usuario usuarioActual = AuthService.getUsuarioActual();
+        if (usuarioActual == null) {
+        JOptionPane.showMessageDialog(this,
+        "No hay ningún usuario logueado.",
+        "Error",
+        JOptionPane.ERROR_MESSAGE);
+        return;
         }
+        double saldoActual = usuarioActual.getSaldo();
+        if (monto > saldoActual) {
+        JOptionPane.showMessageDialog(this,
+                "No tiene fondos suficientes.\nSaldo: Gs. " + String.format("%,.0f", saldoActual),
+                "Saldo insuficiente",
+                JOptionPane.ERROR_MESSAGE);
+        return;
+    }
 
         // --- CONFIRMACIÓN FINAL ---
         
         int respuesta = JOptionPane.showConfirmDialog(this,
-                "¿Está seguro que desea transferir Gs. " + String.format("%,.0f", monto) + "\n" +
-                "a la cuenta con Cédula Nro: " + cedulaDestino + "?",
-                "Confirmar Transferencia",
-                JOptionPane.YES_NO_OPTION);
+            "¿Desea transferir Gs. " + String.format("%,.0f", monto) +
+            " a la cuenta con Cédula Nro: " + cedulaDestino + "?",
+            "Confirmar Transferencia",
+            JOptionPane.YES_NO_OPTION);
 
-        if (respuesta == JOptionPane.YES_OPTION) {
-            // Llamamos al servicio que creamos arriba
-            boolean exito = cuentaService.transferir(cedulaDestino, monto);
+    if (respuesta != JOptionPane.YES_OPTION) return;
 
-            if (exito) {
-                JOptionPane.showMessageDialog(this,
-                        "¡Transferencia realizada exitosamente!",
-                        "Éxito",
-                        JOptionPane.INFORMATION_MESSAGE);
-                
-                new Menu().setVisible(true);
-                this.dispose();
-            } else {
-                JOptionPane.showMessageDialog(this,
-                        "No se pudo completar la transferencia.\n" +
-                        "Verifique que la Cédula de destino exista.",
-                        "Error en la operación",
-                        JOptionPane.ERROR_MESSAGE);
-            }
-        }
+    // --- Ventana emergente OTP ---
+    String otpIngresado = JOptionPane.showInputDialog(this,
+            "Ingrese su OTP (PIN de transacción):",
+            "Validación de Seguridad",
+            JOptionPane.QUESTION_MESSAGE);
+
+    if (otpIngresado == null || otpIngresado.trim().isEmpty()) {
+        return; // canceló
+    }
+
+    if (!otpIngresado.equals(usuarioActual.getPinTransaccion())) {
+        JOptionPane.showMessageDialog(this,
+                "PIN INCORRECTO. Transferencia cancelada.",
+                "Error de Seguridad",
+                JOptionPane.ERROR_MESSAGE);
+        return;
+    }
+
+    // --- Transferencia ---
+    boolean exito = cuentaService.transferir(usuarioActual.getCedula(), cedulaDestino, monto);
+
+    if (exito) {
+        JOptionPane.showMessageDialog(this,
+                "¡Transferencia realizada exitosamente!",
+                "Éxito",
+                JOptionPane.INFORMATION_MESSAGE);
+        new Menu().setVisible(true);
+        this.dispose();
+    } else {
+        JOptionPane.showMessageDialog(this,
+                "No se pudo completar la transferencia.\nVerifique la Cédula de destino.",
+                "Error en la operación",
+                JOptionPane.ERROR_MESSAGE);
+    }  
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void botónAtrásTransferencia(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botónAtrásTransferencia

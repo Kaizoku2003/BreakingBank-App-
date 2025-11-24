@@ -193,7 +193,8 @@ public class Menu extends javax.swing.JFrame {
     }//GEN-LAST:event_botónCerrarSesión
 
     private void botónAcercaDelSistema(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botónAcercaDelSistema
-        // TODO add your handling code here:
+        new AcercaDe().setVisible(true);
+        this.dispose();
     }//GEN-LAST:event_botónAcercaDelSistema
 
     /**

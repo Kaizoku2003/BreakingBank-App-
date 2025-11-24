@@ -4,17 +4,19 @@
  */
 package breakingbank;
 
-/**
- *
- * @author benja
- */
-
-
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ *
+ * @author Jesús Centurión
+ * @author Fabrizio Falcón
+ * @author Santino Gianninotto
+ * @author Benjamín Ojeda
+ *
+ * Clase encargada de leer los datos de los usuarios registrados de usuarios.txt
+ */
 public class UsuarioRepository {
 
     private static final String FILE_NAME = "usuarios.txt";
@@ -72,7 +74,12 @@ public class UsuarioRepository {
         return lista;
     }
 
-    // 🔁 Actualizar datos de un usuario (incluye saldo)
+    /**
+     * Actualizar datos de un usuario (incluye saldo)
+     *
+     * @param usuario
+     * @return
+     */
     public boolean actualizarUsuario(Usuario usuario) {
         List<Usuario> usuarios = leerTodos();
         boolean encontrado = false;

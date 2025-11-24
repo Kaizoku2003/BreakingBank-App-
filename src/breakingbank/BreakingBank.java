@@ -6,17 +6,20 @@ package breakingbank;
 
 /**
  *
- * @author Jesús Centurión 
- * @author Fabrizio Falcón 
+ * @author Jesús Centurión
+ * @author Fabrizio Falcón
  * @author Santino Gianninotto
- * @author Benjamín Ojeda 
+ * @author Benjamín Ojeda
+ */
+/**
+ * Clase base de la interfaz
  */
 public class BreakingBank {
 
     public static void main(String[] args) {
         java.awt.EventQueue.invokeLater(() -> {
-        new inicio().setVisible(true);  
-    });
+            new inicio().setVisible(true);
+        });
     }
-    
+
 }

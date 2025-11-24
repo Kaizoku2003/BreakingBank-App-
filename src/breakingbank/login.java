@@ -1,4 +1,4 @@
- /*
+/*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
@@ -11,21 +11,18 @@ import javax.swing.JOptionPane;
  * @author tino
  */
 public class login extends javax.swing.JFrame {
-   
 
-   private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(login.class.getName());
+    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(login.class.getName());
 
     // 👉 Servicio de autenticación
     private final AuthService authService = new AuthService();
 
-   
-     
     @SuppressWarnings("unchecked")
-    
+
     public login() {
-    initComponents();
-    setLocationRelativeTo(null); // centra la ventana (opcional)
-}
+        initComponents();
+        setLocationRelativeTo(null); // centra la ventana (opcional)
+    }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -233,8 +230,6 @@ public class login extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> new login().setVisible(true));
     }
-    
-     
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

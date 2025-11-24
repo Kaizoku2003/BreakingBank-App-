@@ -10,9 +10,11 @@ package breakingbank;
  * @author Fabrizio Falcón
  * @author Santino Gianninoto
  * @author Benjamín Ojeda
- * 
+ *
  */
-
+/**
+ * Clase encargada del servicio de autenticacion
+ */
 public class AuthService {
 
     private final UsuarioRepository repo = new UsuarioRepository();
@@ -21,7 +23,7 @@ public class AuthService {
     private static Usuario usuarioActual = null;
 
     public boolean registrarUsuario(String nombre, String telefono, String correo,
-                                    String direccion, String cedula, String password, String pinTransaccion) {
+            String direccion, String cedula, String password, String pinTransaccion) {
 
         if (repo.existeCedula(cedula)) {
             return false; // ya existe

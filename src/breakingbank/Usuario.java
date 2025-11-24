@@ -10,8 +10,9 @@ package breakingbank;
  * @author Fabrizio Falcón
  * @author Santino Gianninoto
  * @author Benjamín Ojeda
+ *
+ * Clase encargada de manejar los datos de los usuarios
  */
-
 public class Usuario {
 
     private String nombreCompleto;
@@ -28,8 +29,8 @@ public class Usuario {
     public static Usuario usuarioLogueado;
 
     public Usuario(String nombreCompleto, String telefono, String correo,
-                   String direccion, String cedula, String password, double saldo, double deudaTarjeta,
-                   double deudaTelefonia, double deudaANDE, String pinTransaccion) {
+            String direccion, String cedula, String password, double saldo, double deudaTarjeta,
+            double deudaTelefonia, double deudaANDE, String pinTransaccion) {
         this.nombreCompleto = nombreCompleto;
         this.telefono = telefono;
         this.correo = correo;
@@ -44,68 +45,123 @@ public class Usuario {
     }
 
     public Usuario(String nombreCompleto, String telefono, String correo,
-                   String direccion, String cedula, String password, String pinTransaccion) {
+            String direccion, String cedula, String password, String pinTransaccion) {
         this(nombreCompleto, telefono, correo, direccion, cedula, password, 0.0, 0.0, 0.0, 0.0, pinTransaccion);
-  
+
     }
 
     // Getters y setters
-    public String getNombreCompleto() { return nombreCompleto; }
-    public void setNombreCompleto(String nombreCompleto) { this.nombreCompleto = nombreCompleto; }
+    public String getNombreCompleto() {
+        return nombreCompleto;
+    }
 
-    public String getTelefono() { return telefono; }
-    public void setTelefono(String telefono) { this.telefono = telefono; }
+    public void setNombreCompleto(String nombreCompleto) {
+        this.nombreCompleto = nombreCompleto;
+    }
 
-    public String getCorreo() { return correo; }
-    public void setCorreo(String correo) { this.correo = correo; }
+    public String getTelefono() {
+        return telefono;
+    }
 
-    public String getDireccion() { return direccion; }
-    public void setDireccion(String direccion) { this.direccion = direccion; }
+    public void setTelefono(String telefono) {
+        this.telefono = telefono;
+    }
 
-    public String getCedula() { return cedula; }
-    public void setCedula(String cedula) { this.cedula = cedula; }
+    public String getCorreo() {
+        return correo;
+    }
 
-    public String getPassword() { return password; }
-    public void setPassword(String password) { this.password = password; }
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
 
-    public double getSaldo() { return saldo; }
-    public void setSaldo(double saldo) { this.saldo = saldo; }
-    
-    public double getDeudaTarjeta() { return deudaTarjeta; }
-    public void setDeudaTarjeta(double d) { deudaTarjeta = d; }
+    public String getDireccion() {
+        return direccion;
+    }
 
-    public double getDeudaTelefonia() { return deudaTelefonia; }
-    public void setDeudaTelefonia(double d) { deudaTelefonia = d; }
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
 
-    public double getDeudaANDE() { return deudaANDE; }
-    public void setDeudaANDE(double d) { deudaANDE = d; }
-    
-    public String getPinTransaccion() { return pinTransaccion; }
-    public void setPinTransaccion(String pinTransaccion) { this.pinTransaccion = pinTransaccion; }
+    public String getCedula() {
+        return cedula;
+    }
+
+    public void setCedula(String cedula) {
+        this.cedula = cedula;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public double getSaldo() {
+        return saldo;
+    }
+
+    public void setSaldo(double saldo) {
+        this.saldo = saldo;
+    }
+
+    public double getDeudaTarjeta() {
+        return deudaTarjeta;
+    }
+
+    public void setDeudaTarjeta(double d) {
+        deudaTarjeta = d;
+    }
+
+    public double getDeudaTelefonia() {
+        return deudaTelefonia;
+    }
+
+    public void setDeudaTelefonia(double d) {
+        deudaTelefonia = d;
+    }
+
+    public double getDeudaANDE() {
+        return deudaANDE;
+    }
+
+    public void setDeudaANDE(double d) {
+        deudaANDE = d;
+    }
+
+    public String getPinTransaccion() {
+        return pinTransaccion;
+    }
+
+    public void setPinTransaccion(String pinTransaccion) {
+        this.pinTransaccion = pinTransaccion;
+    }
 
     // Para guardar en el archivo
     public String aLineaArchivo() {
         // Formato: cedula;nombre;telefono;correo;direccion;password;saldo
-        return cedula + ";" + nombreCompleto + ";" + telefono + ";" + correo + ";" +
-               direccion + ";" + password + ";" + saldo + ";" +
-               deudaTarjeta + ";" + deudaTelefonia + ";" + deudaANDE + ";" + pinTransaccion;
-               
+        return cedula + ";" + nombreCompleto + ";" + telefono + ";" + correo + ";"
+                + direccion + ";" + password + ";" + saldo + ";"
+                + deudaTarjeta + ";" + deudaTelefonia + ";" + deudaANDE + ";" + pinTransaccion;
+
     }
 
     // Para leer desde el archivo
     public static Usuario desdeLineaArchivo(String linea) {
-        
+
         String[] partes = linea.split(";");
         if (partes.length < 11) {
             return null; // línea vieja o mal formada
         }
-        String cedula    = partes[0];
-        String nombre    = partes[1];
-        String telefono  = partes[2];
-        String correo    = partes[3];
+        String cedula = partes[0];
+        String nombre = partes[1];
+        String telefono = partes[2];
+        String correo = partes[3];
         String direccion = partes[4];
-        String password  = partes[5];
-        double saldo     = 0.0;
+        String password = partes[5];
+        double saldo = 0.0;
         try {
             saldo = Double.parseDouble(partes[6]);
         } catch (NumberFormatException e) {
@@ -114,7 +170,7 @@ public class Usuario {
         double d1 = Double.parseDouble(partes[7]);
         double d2 = Double.parseDouble(partes[8]);
         double d3 = Double.parseDouble(partes[9]);
-        
+
         String pin = "0000";
         if (partes.length > 10) {
             pin = partes[10].trim();

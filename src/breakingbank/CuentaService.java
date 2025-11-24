@@ -6,11 +6,17 @@ package breakingbank;
 
 /**
  *
- * @author benja
+ * @author Jesús Centurión
+ * @author Fabrizio Falcón
+ * @author Santino Gianninotto
+ * @author Benjamín Ojeda
+ *
+ *
  */
-
-
-
+/**
+ *
+ * Clase encargada de manejar las operaciones de los usuarios
+ */
 public class CuentaService {
 
     private final UsuarioRepository repo = new UsuarioRepository();
@@ -40,34 +46,35 @@ public class CuentaService {
         // Guardar en archivo
         return repo.actualizarUsuario(u);
     }
-    // Necesitamos instanciar authService si no es estático (basado en tu código anterior)
-    private final AuthService authService = new AuthService(); 
+    // Necesitamos instanciar authService si no es estático
+    private final AuthService authService = new AuthService();
 
     public boolean transferir(String cedulaOrigen, String cedulaDestino, double monto) {
         // 1. Validaciones básicas
-        if (monto <= 0) return false;
+        if (monto <= 0) {
+            return false;
+        }
 
         // 2. Buscar usuario que envía (Origen)
         Usuario origen = repo.buscarPorCedula(cedulaOrigen);
-        
+
         // 3. Buscar usuario que recibe (Destino)
         Usuario destino = repo.buscarPorCedula(cedulaDestino);
-        
+
         // Validar que ambos existan
         if (origen == null || destino == null) {
-            return false; 
+            return false;
         }
 
         // 4. Verificar fondos del origen
         if (origen.getSaldo() < monto) {
-            return false; 
+            return false;
         }
 
         // --- REALIZAR LA TRANSACCIÓN ---
-        
         // Restar al origen
         origen.setSaldo(origen.getSaldo() - monto);
-        
+
         // Sumar al destino
         destino.setSaldo(destino.getSaldo() + monto);
 

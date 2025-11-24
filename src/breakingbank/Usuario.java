@@ -24,10 +24,11 @@ public class Usuario {
     private double deudaTarjeta;
     private double deudaTelefonia;
     private double deudaANDE;
+    private String pinTransaccion;
 
     public Usuario(String nombreCompleto, String telefono, String correo,
                    String direccion, String cedula, String password, double saldo, double deudaTarjeta,
-                   double deudaTelefonia, double deudaANDE) {
+                   double deudaTelefonia, double deudaANDE, String pínTransaccion) {
         this.nombreCompleto = nombreCompleto;
         this.telefono = telefono;
         this.correo = correo;
@@ -38,12 +39,13 @@ public class Usuario {
         this.deudaTarjeta = deudaTarjeta;
         this.deudaTelefonia = deudaTelefonia;
         this.deudaANDE = deudaANDE;
+        this.pinTransaccion = pinTransaccion;
     }
 
-    // Constructor sin saldo (por si quieres)
     public Usuario(String nombreCompleto, String telefono, String correo,
-                   String direccion, String cedula, String password) {
-        this(nombreCompleto, telefono, correo, direccion, cedula, password, 0.0, 0.0, 0.0, 0.0);
+                   String direccion, String cedula, String password, String pinTransaccion) {
+        this(nombreCompleto, telefono, correo, direccion, cedula, password, 0.0, 0.0, 0.0, 0.0, pinTransaccion);
+  
     }
 
     // Getters y setters
@@ -76,17 +78,22 @@ public class Usuario {
 
     public double getDeudaANDE() { return deudaANDE; }
     public void setDeudaANDE(double d) { deudaANDE = d; }
+    
+    public String getPinTransaccion() { return pinTransaccion; }
+    public void setPinTransaccion(String pinTransaccion) { this.pinTransaccion = pinTransaccion; }
 
     // Para guardar en el archivo
     public String aLineaArchivo() {
         // Formato: cedula;nombre;telefono;correo;direccion;password;saldo
         return cedula + ";" + nombreCompleto + ";" + telefono + ";" + correo + ";" +
                direccion + ";" + password + ";" + saldo + ";" +
-               deudaTarjeta + ";" + deudaTelefonia + ";" + deudaANDE;
+               deudaTarjeta + ";" + deudaTelefonia + ";" + deudaANDE + ";" + pinTransaccion;
+               
     }
 
     // Para leer desde el archivo
     public static Usuario desdeLineaArchivo(String linea) {
+        
         String[] partes = linea.split(";");
         if (partes.length < 10) {
             return null; // línea vieja o mal formada
@@ -106,6 +113,11 @@ public class Usuario {
         double d1 = Double.parseDouble(partes[7]);
         double d2 = Double.parseDouble(partes[8]);
         double d3 = Double.parseDouble(partes[9]);
-        return new Usuario(nombre, telefono, correo, direccion, cedula, password, saldo, d1, d2, d3);
+        
+        String pin = "0000";
+        if (partes.length > 10) {
+            pin = partes[10];
+        }
+        return new Usuario(nombre, telefono, correo, direccion, cedula, password, saldo, d1, d2, d3, pin);
     }
 }

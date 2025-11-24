@@ -16,7 +16,7 @@ public class login extends javax.swing.JFrame {
    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(login.class.getName());
 
     // 👉 Servicio de autenticación
-    private final authService authService = new authService();
+    private final AuthService authService = new AuthService();
 
    
      

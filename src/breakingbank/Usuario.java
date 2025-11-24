@@ -25,10 +25,11 @@ public class Usuario {
     private double deudaTelefonia;
     private double deudaANDE;
     private String pinTransaccion;
+    public static Usuario usuarioLogueado;
 
     public Usuario(String nombreCompleto, String telefono, String correo,
                    String direccion, String cedula, String password, double saldo, double deudaTarjeta,
-                   double deudaTelefonia, double deudaANDE, String pínTransaccion) {
+                   double deudaTelefonia, double deudaANDE, String pinTransaccion) {
         this.nombreCompleto = nombreCompleto;
         this.telefono = telefono;
         this.correo = correo;
@@ -95,7 +96,7 @@ public class Usuario {
     public static Usuario desdeLineaArchivo(String linea) {
         
         String[] partes = linea.split(";");
-        if (partes.length < 10) {
+        if (partes.length < 11) {
             return null; // línea vieja o mal formada
         }
         String cedula    = partes[0];
@@ -116,7 +117,7 @@ public class Usuario {
         
         String pin = "0000";
         if (partes.length > 10) {
-            pin = partes[10];
+            pin = partes[10].trim();
         }
         return new Usuario(nombre, telefono, correo, direccion, cedula, password, saldo, d1, d2, d3, pin);
     }

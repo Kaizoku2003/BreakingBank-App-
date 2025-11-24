@@ -191,7 +191,7 @@
             <Property name="text" type="java.lang.String" value="Acerca del Sistema"/>
           </Properties>
           <Events>
-            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton7bot&#xf3;nCerrarSesi&#xf3;n"/>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="bot&#xf3;nAcercaDelSistema"/>
           </Events>
         </Component>
       </SubComponents>

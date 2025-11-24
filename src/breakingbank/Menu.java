@@ -96,7 +96,7 @@ public class Menu extends javax.swing.JFrame {
         jButton7.setText("Acerca del Sistema");
         jButton7.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton7botónCerrarSesión(evt);
+                botónAcercaDelSistema(evt);
             }
         });
 
@@ -192,9 +192,9 @@ public class Menu extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_botónCerrarSesión
 
-    private void jButton7botónCerrarSesión(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton7botónCerrarSesión
+    private void botónAcercaDelSistema(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botónAcercaDelSistema
         // TODO add your handling code here:
-    }//GEN-LAST:event_jButton7botónCerrarSesión
+    }//GEN-LAST:event_botónAcercaDelSistema
 
     /**
      * @param args the command line arguments

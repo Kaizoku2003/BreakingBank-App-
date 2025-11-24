@@ -20,13 +20,13 @@ public class authService {
     private static Usuario usuarioActual = null;
 
     public boolean registrarUsuario(String nombre, String telefono, String correo,
-                                    String direccion, String cedula, String password) {
+                                    String direccion, String cedula, String password, String pinTransaccion) {
 
         if (repo.existeCedula(cedula)) {
             return false; // ya existe
         }
 
-        Usuario u = new Usuario(nombre, telefono, correo, direccion, cedula, password, 0.0, 0.0, 0.0, 0.0);
+        Usuario u = new Usuario(nombre, telefono, correo, direccion, cedula, password, 0.0, 0.0, 0.0, 0.0, pinTransaccion);
         return repo.guardar(u);
     }
 

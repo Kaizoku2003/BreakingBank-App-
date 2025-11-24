@@ -8,16 +8,21 @@ import javax.swing.JOptionPane;
 
 /**
  *
- * @author tino
+ * @author Jesus Centurión
+ * @author Fabrizio Falcón
+ * @author Santino Gianninoto
+ * @author Benjamn Ojeda
  */
 public class Deposito extends javax.swing.JFrame {
     
     private final CuentaService cuentaService = new CuentaService();
+    private final AuthService authService = new AuthService();
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Deposito.class.getName());
 
     /**
      * Creates new form Deposito
      */
+    
     public Deposito() {
         initComponents();
         setLocationRelativeTo(null); // Centrar ventana
@@ -194,21 +199,60 @@ public class Deposito extends javax.swing.JFrame {
 
         // --- SI PASA TODO LO ANTERIOR, PROCEDEMOS ---
 
-        boolean ok = cuentaService.depositar(monto);
+        String pinIngresado = JOptionPane.showInputDialog(
+        this,
+        "Ingrese su PIN de transacción:",
+        "Validación requerida",
+        JOptionPane.PLAIN_MESSAGE
+);
 
-        if (!ok) {
-            JOptionPane.showMessageDialog(this,
-                    "Ocurrió un error al realizar el depósito.\n¿Hay un usuario logueado?",
-                    "Error",
-                    JOptionPane.ERROR_MESSAGE);
-        } else {
-            JOptionPane.showMessageDialog(this,
-                    "Depósito realizado con éxito.\nMonto acreditado: " + String.format("%.0f", monto),
-                    "Depósito Exitoso",
-                    JOptionPane.INFORMATION_MESSAGE);
-            
-            new Menu().setVisible(true);
-            this.dispose();
+// Si canceló
+if (pinIngresado == null) {
+    return;
+}
+
+// 2) Obtener el pin real del usuario logueado
+Usuario usuario = authService.getUsuarioActual();
+if (usuario == null) {
+    JOptionPane.showMessageDialog(this,
+        "No hay ningún usuario logueado.",
+        "Error",
+        JOptionPane.ERROR_MESSAGE);
+    return;
+}
+String pinReal = usuario.getPinTransaccion();
+
+// 3) Validar
+if (!pinIngresado.equals(pinReal)) {
+    JOptionPane.showMessageDialog(
+            this,
+            "PIN incorrecto. Operación cancelada.",
+            "Error",
+            JOptionPane.ERROR_MESSAGE
+    );
+    return;
+}
+
+// 4) PIN correcto → recién ahora se hace el depósito
+boolean ok = cuentaService.depositar(monto);
+
+if (!ok) {
+    JOptionPane.showMessageDialog(
+            this,
+            "Ocurrió un error al realizar el depósito.",
+            "Error",
+            JOptionPane.ERROR_MESSAGE
+    );
+} else {
+    JOptionPane.showMessageDialog(
+            this,
+            "Depósito realizado con éxito.\nMonto acreditado: " + monto,
+            "Depósito Exitoso",
+            JOptionPane.INFORMATION_MESSAGE
+    );
+
+    new Menu().setVisible(true);
+    this.dispose();
         }
     }//GEN-LAST:event_jButton2ActionPerformed
 

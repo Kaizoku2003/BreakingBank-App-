@@ -59,7 +59,7 @@ public class AcercaDe extends javax.swing.JFrame {
         btnAbrirPDF.setText("Ver Documentación (PDF)");
         btnAbrirPDF.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                abrirDocumentacionPDF();
+                abrirDocumentacion();
             }
         });
 
@@ -105,25 +105,63 @@ public class AcercaDe extends javax.swing.JFrame {
     }
 
     /**
-     * abre el pdf con la documentacion
+     * abre la documentacion del proyecto (javadoc)
      */
-    private void abrirDocumentacionPDF() {
+    private void abrirDocumentacion() {
         try {
-            // IMPORTANTE: Cambia "documentacion.pdf" por el nombre real de tu archivo
-            // El archivo debe estar en la carpeta raíz de tu proyecto (fuera de 'src')
-            File archivoPDF = new File("documentacion.pdf");
+            // 1. Definir el archivo (igual que antes)
+            java.io.File proyectoDir = new java.io.File(System.getProperty("user.dir"));
+            java.io.File docFile = new java.io.File(proyectoDir, "dist/javadoc/index.html");
 
-            if (archivoPDF.exists()) {
-                if (Desktop.isDesktopSupported()) {
-                    Desktop.getDesktop().open(archivoPDF);
-                } else {
-                    JOptionPane.showMessageDialog(this, "El sistema no soporta abrir archivos automáticamente.");
-                }
+            if (docFile.exists()) {
+                // 2. Intentar abrirlo de forma robusta
+                abrirEnNavegador(docFile);
             } else {
-                JOptionPane.showMessageDialog(this, "No se encontró el archivo 'documentacion.pdf'.\nAsegúrate de que esté en la carpeta del proyecto.");
+                javax.swing.JOptionPane.showMessageDialog(this,
+                        "No se encontró la documentación en: \n" + docFile.getAbsolutePath(),
+                        "Documentación no encontrada",
+                        javax.swing.JOptionPane.WARNING_MESSAGE);
             }
-        } catch (IOException ex) {
-            JOptionPane.showMessageDialog(this, "Error al abrir el PDF: " + ex.getMessage());
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            javax.swing.JOptionPane.showMessageDialog(this,
+                    "Error al intentar abrir la documentación:\n" + e.getMessage(),
+                    "Error",
+                    javax.swing.JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    /**
+     * Método auxiliar para manejar la lógica de "Cross-Platform"
+    */
+    private void abrirEnNavegador(java.io.File file) throws java.io.IOException {
+        String os = System.getProperty("os.name").toLowerCase();
+
+        // Intento 1: Windows / Mac
+        boolean desktopSupported = java.awt.Desktop.isDesktopSupported()
+                && java.awt.Desktop.getDesktop().isSupported(java.awt.Desktop.Action.BROWSE);
+
+        if (desktopSupported) {
+            try {
+                java.awt.Desktop.getDesktop().browse(file.toURI());
+                return;
+            } catch (Exception e) {
+                // Si falla aunque diga que es soportado (común en Linux), seguimos al plan B
+                System.err.println("Fallo Desktop.browse, intentando comando nativo...");
+            }
+        }
+
+        // Intento 2: Linux
+        if (os.contains("nux") || os.contains("nix")) {
+            // xdg-open es el estándar en Linux para abrir archivos con su programa predeterminado
+            Runtime.getRuntime().exec(new String[]{"xdg-open", file.getAbsolutePath()});
+        } else if (os.contains("win")) {
+            Runtime.getRuntime().exec(new String[]{"rundll32", "url.dll,FileProtocolHandler", file.getAbsolutePath()});
+        } else if (os.contains("mac")) {
+            Runtime.getRuntime().exec(new String[]{"open", file.getAbsolutePath()});
+        } else {
+            throw new java.io.IOException("No se pudo abrir el navegador automáticamente en este sistema operativo.");
         }
     }
 

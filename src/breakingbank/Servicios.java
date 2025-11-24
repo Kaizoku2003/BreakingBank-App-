@@ -5,6 +5,7 @@
 package breakingbank;
 
 import javax.swing.JOptionPane;
+import javax.swing.event.ListSelectionListener;
 
 /**
  *
@@ -13,12 +14,70 @@ import javax.swing.JOptionPane;
 public class Servicios extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Servicios.class.getName());
+    
+     // Usuario actual cargado desde Usuario.usuarioLogueado
+    private Usuario usuarioActual;
+    private UsuarioRepository repo = new UsuarioRepository();
 
     /**
      * Creates new form Servicios
      */
     public Servicios() {
+        // Cargar el usuario logueado de forma autónoma
+        this.usuarioActual = Usuario.usuarioLogueado;
         initComponents();
+        configurarEventos();
+        inicializarCamposSegunUsuario();
+        setLocationRelativeTo(null);
+    }
+    private void configurarEventos() {
+        // Cuando cambie la selección en la lista, mostrar el servicio y la deuda correspondiente
+        jList1.addListSelectionListener((ListSelectionListener) evt -> {
+            if (!evt.getValueIsAdjusting()) {
+                actualizarServicioSeleccionado();
+            }
+        });
+    }
+
+    private void inicializarCamposSegunUsuario() {
+        if (usuarioActual == null) {
+            // Si no hay usuario logueado, deshabilitar campos de pago
+            jTextField2.setText("");
+            jTextField3.setText("");
+            jTextField4.setText("");
+            jButton2.setEnabled(false);
+            JOptionPane.showMessageDialog(this,
+                    "No se detectó un usuario logueado. Inicie sesión para usar esta pantalla.",
+                    "Usuario no detectado",
+                    JOptionPane.WARNING_MESSAGE);
+        } else {
+            // Si hay usuario, al inicio no hay selección; dejamos campos vacíos
+            jTextField2.setText("");
+            jTextField3.setText("");
+            jTextField4.setText("");
+            jButton2.setEnabled(true);
+        }
+    }
+
+    private void actualizarServicioSeleccionado() {
+        if (usuarioActual == null) return;
+
+        String sel = jList1.getSelectedValue();
+        if (sel == null) return;
+
+        if (sel.startsWith("01")) {
+            jTextField2.setText("Tarjeta");
+            jTextField3.setText(String.valueOf(usuarioActual.getDeudaTarjeta()));
+        } else if (sel.startsWith("02")) {
+            jTextField2.setText("Telefonía");
+            jTextField3.setText(String.valueOf(usuarioActual.getDeudaTelefonia()));
+        } else if (sel.startsWith("03")) {
+            jTextField2.setText("ANDE");
+            jTextField3.setText(String.valueOf(usuarioActual.getDeudaANDE()));
+        } else {
+            jTextField2.setText("");
+            jTextField3.setText("");
+        }
     }
 
     /**
@@ -33,12 +92,10 @@ public class Servicios extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
-        jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jPanel3 = new javax.swing.JPanel();
+        jLabel3 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jList1 = new javax.swing.JList<>();
-        jLabel3 = new javax.swing.JLabel();
+        jPanel3 = new javax.swing.JPanel();
         jPanel4 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
@@ -56,33 +113,8 @@ public class Servicios extends javax.swing.JFrame {
         jLabel1.setText("Pago de Servicios");
         jLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
-        jLabel2.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
-        jLabel2.setText("Ingrese el código de servicio:");
-
-        jTextField1.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
-
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap(30, Short.MAX_VALUE)
-                .addComponent(jLabel2)
-                .addContainerGap(30, Short.MAX_VALUE))
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(117, 117, 117)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, 51, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(28, 28, 28)
-                .addComponent(jLabel2)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(54, Short.MAX_VALUE))
-        );
+        jLabel3.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
+        jLabel3.setText("Códigos de Servicio");
 
         jList1.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
         jList1.setModel(new javax.swing.AbstractListModel<String>() {
@@ -92,31 +124,39 @@ public class Servicios extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jList1);
 
-        jLabel3.setFont(new java.awt.Font("SansSerif", 0, 18)); // NOI18N
-        jLabel3.setText("Códigos de Servicio");
+        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
+        jPanel2.setLayout(jPanel2Layout);
+        jPanel2Layout.setHorizontalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addContainerGap(208, Short.MAX_VALUE)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(jLabel3)
+                        .addContainerGap())
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(19, 19, 19))))
+        );
+        jPanel2Layout.setVerticalGroup(
+            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addComponent(jLabel3)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap(17, Short.MAX_VALUE)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(32, 32, 32))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                        .addComponent(jLabel3)
-                        .addGap(14, 14, 14))))
+            .addGap(0, 191, Short.MAX_VALUE)
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(61, 61, 61))
+            .addGap(0, 138, Short.MAX_VALUE)
         );
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -138,7 +178,7 @@ public class Servicios extends javax.swing.JFrame {
                 .addContainerGap(15, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -256,13 +296,79 @@ public class Servicios extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+        // Validaciones y lógica de pago
+        if (usuarioActual == null) {
+            JOptionPane.showMessageDialog(this, "No se detectó usuario logueado.");
+            return;
+        }
+
+        String sel = jList1.getSelectedValue();
+        if (sel == null) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un servicio.");
+            return;
+        }
+
+        String deudaStr = jTextField3.getText().trim();
+        if (deudaStr.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No se pudo determinar la deuda del servicio seleccionado.");
+            return;
+        }
+
+        double deuda;
+        try {
+            deuda = Double.parseDouble(deudaStr);
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Valor de deuda inválido.");
+            return;
+        }
+
+        double monto;
+        try {
+            monto = Double.parseDouble(jTextField4.getText().trim());
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Ingrese un monto válido.");
+            return;
+        }
+
+        if (monto <= 0) {
+            JOptionPane.showMessageDialog(this, "El monto debe ser mayor que cero.");
+            return;
+        }
+
+        if (monto > deuda) {
+            JOptionPane.showMessageDialog(this, "El monto excede la deuda.");
+            return;
+        }
+
+        if (monto > usuarioActual.getSaldo()) {
+            JOptionPane.showMessageDialog(this, "Saldo insuficiente.");
+            return;
+        }
+
+        // Realizar pago: descontar saldo y deuda
+        usuarioActual.setSaldo(usuarioActual.getSaldo() - monto);
+
+        if (sel.startsWith("01")) {
+            usuarioActual.setDeudaTarjeta(deuda - monto);
+        } else if (sel.startsWith("02")) {
+            usuarioActual.setDeudaTelefonia(deuda - monto);
+        } else if (sel.startsWith("03")) {
+            usuarioActual.setDeudaANDE(deuda - monto);
+        }
+
+        // Guardar cambios en archivo
+        boolean ok = repo.actualizarUsuario(usuarioActual);
+        if (!ok) {
+            JOptionPane.showMessageDialog(this, "Error al guardar los cambios. Intente nuevamente.");
+            return;
+        }
 
         JOptionPane.showMessageDialog(this,
-            "Operación realizada con éxito!",
-            "Atención!",
-            JOptionPane.INFORMATION_MESSAGE);
-        
+                "Pago realizado con éxito.",
+                "Atención",
+                JOptionPane.INFORMATION_MESSAGE);
+
+        // Volver al menú (sin modificar Menu.java)
         new Menu().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -294,6 +400,19 @@ public class Servicios extends javax.swing.JFrame {
         //</editor-fold>
 
         /* Create and display the form */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
+            }
+        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
+            logger.log(java.util.logging.Level.SEVERE, null, ex);
+        }
+        //</editor-fold>
+
+        /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> new Servicios().setVisible(true));
     }
 
@@ -301,7 +420,6 @@ public class Servicios extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
@@ -312,7 +430,6 @@ public class Servicios extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
     private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
     private javax.swing.JTextField jTextField4;

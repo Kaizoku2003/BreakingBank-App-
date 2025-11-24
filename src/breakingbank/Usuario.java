@@ -6,7 +6,10 @@ package breakingbank;
 
 /**
  *
- * @author benja
+ * @author Jesús Centurión
+ * @author Fabrizio Falcón
+ * @author Santino Gianninoto
+ * @author Benjamín Ojeda
  */
 
 public class Usuario {

@@ -22,12 +22,28 @@ public class Saldo extends javax.swing.JFrame {
     public Saldo() {
         initComponents();
         setLocationRelativeTo(null);
+        
+        // 1. Quita el borde (el recuadro dibujado)
+        jTextField3.setBorder(null);
+        
+        // 2. Hace que el fondo del campo sea transparente
+        jTextField3.setBackground(this.getBackground());
+        // --------------------
+        
         cargarSaldo();
     }
 
     private void cargarSaldo() {
         double saldo = cuentaService.obtenerSaldoActual();
-        jTextField3.setText(String.format("%.2f", saldo));
+        
+        // Suponiendo que tu servicio devuelve -1 si hay error o no hay usuario
+        if (saldo < 0) {
+            jTextField3.setText("Error / Sin Sesión");
+            jTextField3.setForeground(java.awt.Color.RED); // Poner texto en rojo
+        } else {
+            jTextField3.setText(String.format("Gs. %,.0f", saldo));
+            jTextField3.setForeground(java.awt.Color.BLACK);
+        }
     }
 
 
@@ -54,7 +70,7 @@ public class Saldo extends javax.swing.JFrame {
         jLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         jButton2.setFont(new java.awt.Font("SansSerif", 0, 36)); // NOI18N
-        jButton2.setText("Confirmar");
+        jButton2.setText("Atrás");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButton2ActionPerformed(evt);
@@ -130,13 +146,7 @@ public class Saldo extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
-
-        JOptionPane.showMessageDialog(this,
-            "Operación realizada con éxito!",
-            "Atención!",
-            JOptionPane.INFORMATION_MESSAGE);
-        
+     // Simplemente volvemos al menú principal sin mostrar mensajes
         new Menu().setVisible(true);
         this.dispose();
     }//GEN-LAST:event_jButton2ActionPerformed

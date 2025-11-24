@@ -12,13 +12,14 @@ import javax.swing.JOptionPane;
  */
 public class Transferencia extends javax.swing.JFrame {
     
+    private final CuentaService cuentaService = new CuentaService();
+    
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(Transferencia.class.getName());
 
-    /**
-     * Creates new form Transferencia
-     */
     public Transferencia() {
         initComponents();
+        // Agrega esto para centrar la ventana al abrirse
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -39,6 +40,7 @@ public class Transferencia extends javax.swing.JFrame {
         jTextField2 = new javax.swing.JTextField();
         jTextField3 = new javax.swing.JTextField();
         jButton2 = new javax.swing.JButton();
+        jButton3 = new javax.swing.JButton();
 
         jTextField1.setText("jTextField1");
 
@@ -52,7 +54,7 @@ public class Transferencia extends javax.swing.JFrame {
         jLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         jLabel2.setFont(new java.awt.Font("SansSerif", 0, 24)); // NOI18N
-        jLabel2.setText("Cuenta Destino:");
+        jLabel2.setText("Cédula destinatario:");
 
         jLabel3.setFont(new java.awt.Font("SansSerif", 0, 24)); // NOI18N
         jLabel3.setText("Monto:");
@@ -100,6 +102,14 @@ public class Transferencia extends javax.swing.JFrame {
             }
         });
 
+        jButton3.setFont(new java.awt.Font("SansSerif", 0, 36)); // NOI18N
+        jButton3.setText("Atrás");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                botónAtrásTransferencia(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -112,7 +122,9 @@ public class Transferencia extends javax.swing.JFrame {
                 .addGap(125, 125, 125))
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton2)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(jButton2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jButton3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -124,23 +136,97 @@ public class Transferencia extends javax.swing.JFrame {
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(65, 65, 65)
                 .addComponent(jButton2)
-                .addContainerGap(139, Short.MAX_VALUE))
+                .addGap(18, 18, 18)
+                .addComponent(jButton3)
+                .addContainerGap(67, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        // TODO add your handling code here:
+        String cedulaDestino = jTextField2.getText().trim();
+        String textoMonto = jTextField3.getText().trim();
+
+        // --- VALIDACIONES DE FORMATO ---
+
+        // 1. Campos vacíos
+        if (cedulaDestino.isEmpty() || textoMonto.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "Por favor, complete la Cédula de destino y el Monto.",
+                    "Datos incompletos",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // 2. Solo números (Ni puntos, ni comas, ni letras)
+        if (!esSoloNumeros(cedulaDestino) || !esSoloNumeros(textoMonto)) {
+            JOptionPane.showMessageDialog(this,
+                    "Los campos deben contener solamente números enteros.\n" +
+                    "No utilice puntos ni letras.",
+                    "Formato Incorrecto",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        double monto = Double.parseDouble(textoMonto);
+
+        // 3. Monto positivo
+        if (monto <= 0) {
+            JOptionPane.showMessageDialog(this,
+                    "El monto a transferir debe ser mayor a cero.",
+                    "Monto inválido",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        // --- VALIDACIÓN DE FONDOS (Saldo suficiente) ---
         
-        JOptionPane.showMessageDialog(this,
-                "Operación realizada con éxito!",
-                "Atención!",
-                JOptionPane.INFORMATION_MESSAGE);
+        double saldoActual = cuentaService.obtenerSaldoActual();
+        if (monto > saldoActual) {
+            JOptionPane.showMessageDialog(this,
+                    "No tiene fondos suficientes para realizar esta operación.\n\n" +
+                    "Saldo actual: Gs. " + String.format("%,.0f", saldoActual) + "\n" +
+                    "Monto a transferir: Gs. " + String.format("%,.0f", monto),
+                    "Saldo Insuficiente",
+                    JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // --- CONFIRMACIÓN FINAL ---
         
+        int respuesta = JOptionPane.showConfirmDialog(this,
+                "¿Está seguro que desea transferir Gs. " + String.format("%,.0f", monto) + "\n" +
+                "a la cuenta con Cédula Nro: " + cedulaDestino + "?",
+                "Confirmar Transferencia",
+                JOptionPane.YES_NO_OPTION);
+
+        if (respuesta == JOptionPane.YES_OPTION) {
+            // Llamamos al servicio que creamos arriba
+            boolean exito = cuentaService.transferir(cedulaDestino, monto);
+
+            if (exito) {
+                JOptionPane.showMessageDialog(this,
+                        "¡Transferencia realizada exitosamente!",
+                        "Éxito",
+                        JOptionPane.INFORMATION_MESSAGE);
+                
+                new Menu().setVisible(true);
+                this.dispose();
+            } else {
+                JOptionPane.showMessageDialog(this,
+                        "No se pudo completar la transferencia.\n" +
+                        "Verifique que la Cédula de destino exista.",
+                        "Error en la operación",
+                        JOptionPane.ERROR_MESSAGE);
+            }
+        }
+    }//GEN-LAST:event_jButton2ActionPerformed
+
+    private void botónAtrásTransferencia(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_botónAtrásTransferencia
         new Menu().setVisible(true);
         this.dispose();
-    }//GEN-LAST:event_jButton2ActionPerformed
+    }//GEN-LAST:event_botónAtrásTransferencia
 
     /**
      * @param args the command line arguments
@@ -166,10 +252,15 @@ public class Transferencia extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> new Transferencia().setVisible(true));
     }
-
+// 1. Método auxiliar para validar que sean solo números
+    private boolean esSoloNumeros(String texto) {
+        return texto != null && texto.matches("[0-9]+");
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

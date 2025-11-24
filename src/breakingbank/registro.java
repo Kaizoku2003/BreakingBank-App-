@@ -5,8 +5,10 @@
 package breakingbank;
 
 /**
- *
- * @author tino
+ * @author Jesús Centurión
+ * @author Fabrizio Falcón
+ * @author Santino Gianninoto
+ * @author Benjamín Ojeda
  */
 import javax.swing.JOptionPane;
 
@@ -19,6 +21,10 @@ public class registro extends javax.swing.JFrame {
     public registro() {
         initComponents();
         setLocationRelativeTo(null);
+        
+        // --- AGREGAR ESTO ---
+        // Esto crea el mensaje flotante al pasar el mouse por encima
+        jPasswordField1.setToolTipText("Requisito: Al menos 1 mayúscula y 1 número (0-9)");
     }
 
     /**
@@ -33,6 +39,10 @@ public class registro extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        jDialog1 = new javax.swing.JDialog();
+        jDialog2 = new javax.swing.JDialog();
+        jDialog3 = new javax.swing.JDialog();
+        jDialog4 = new javax.swing.JDialog();
         jLabel1 = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         jPanel2 = new javax.swing.JPanel();
@@ -57,6 +67,51 @@ public class registro extends javax.swing.JFrame {
         jLabel8 = new javax.swing.JLabel();
         jPasswordField2 = new javax.swing.JPasswordField();
         jButton1 = new javax.swing.JButton();
+        jButton2 = new javax.swing.JButton();
+
+        javax.swing.GroupLayout jDialog1Layout = new javax.swing.GroupLayout(jDialog1.getContentPane());
+        jDialog1.getContentPane().setLayout(jDialog1Layout);
+        jDialog1Layout.setHorizontalGroup(
+            jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 400, Short.MAX_VALUE)
+        );
+        jDialog1Layout.setVerticalGroup(
+            jDialog1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 300, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout jDialog2Layout = new javax.swing.GroupLayout(jDialog2.getContentPane());
+        jDialog2.getContentPane().setLayout(jDialog2Layout);
+        jDialog2Layout.setHorizontalGroup(
+            jDialog2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 400, Short.MAX_VALUE)
+        );
+        jDialog2Layout.setVerticalGroup(
+            jDialog2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 300, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout jDialog3Layout = new javax.swing.GroupLayout(jDialog3.getContentPane());
+        jDialog3.getContentPane().setLayout(jDialog3Layout);
+        jDialog3Layout.setHorizontalGroup(
+            jDialog3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 400, Short.MAX_VALUE)
+        );
+        jDialog3Layout.setVerticalGroup(
+            jDialog3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 300, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout jDialog4Layout = new javax.swing.GroupLayout(jDialog4.getContentPane());
+        jDialog4.getContentPane().setLayout(jDialog4Layout);
+        jDialog4Layout.setHorizontalGroup(
+            jDialog4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 400, Short.MAX_VALUE)
+        );
+        jDialog4Layout.setVerticalGroup(
+            jDialog4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 300, Short.MAX_VALUE)
+        );
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -322,6 +377,14 @@ public class registro extends javax.swing.JFrame {
             }
         });
 
+        jButton2.setFont(new java.awt.Font("SansSerif", 0, 24)); // NOI18N
+        jButton2.setText("Atrás");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -331,19 +394,22 @@ public class registro extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.CENTER)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 265, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(72, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(32, Short.MAX_VALUE)
+                .addContainerGap(10, Short.MAX_VALUE)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(11, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton1)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton2)
+                .addContainerGap(33, Short.MAX_VALUE))
         );
 
         pack();
@@ -376,7 +442,7 @@ public class registro extends javax.swing.JFrame {
     }//GEN-LAST:event_jPasswordField1ActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-                String nombre    = jTextField1.getText().trim();
+        String nombre    = jTextField1.getText().trim();
         String telefono  = jTextField2.getText().trim();
         String correo    = jTextField3.getText().trim();
         String direccion = jTextField4.getText().trim();
@@ -384,6 +450,7 @@ public class registro extends javax.swing.JFrame {
         String pass1     = new String(jPasswordField1.getPassword());
         String pass2     = new String(jPasswordField2.getPassword());
 
+        // 1. Verificamos que no esté vacío
         if (nombre.isEmpty() || telefono.isEmpty() || correo.isEmpty() ||
             direccion.isEmpty() || cedula.isEmpty() ||
             pass1.isEmpty() || pass2.isEmpty()) {
@@ -393,7 +460,35 @@ public class registro extends javax.swing.JFrame {
                     JOptionPane.WARNING_MESSAGE);
             return;
         }
+        // --- NUEVA VALIDACIÓN DE CORREO ---
+        if (!esCorreoValido(correo)) {
+             JOptionPane.showMessageDialog(this,
+                    "El correo electrónico no es válido.\n\n" +
+                    "Debe contener un '@' (arroba) y un dominio (ejemplo.com).\n" +
+                    "Ejemplo: usuario@correo.com",
+                    "Correo Inválido",
+                    JOptionPane.WARNING_MESSAGE);
+             return;
+        }
 
+        // --- NUEVA VALIDACIÓN DE SEGURIDAD ---
+        // 2. Verificamos los requisitos (Mayúscula y Número)
+        if (!esContrasenaSegura(pass1)) {
+            JOptionPane.showMessageDialog(this,
+                    "La contraseña no es segura.\n\n" +
+                    "Requisitos:\n" +
+                    "- Al menos una letra MAYÚSCULA\n" +
+                    "- Al menos un NÚMERO (0-9)",
+                    "Contraseña Débil",
+                    JOptionPane.WARNING_MESSAGE);
+            // Borramos el campo para que intente de nuevo
+            jPasswordField1.setText("");
+            jPasswordField2.setText("");
+            return; 
+        }
+        // -------------------------------------
+
+        // 3. Verificamos que coincidan
         if (!pass1.equals(pass2)) {
             JOptionPane.showMessageDialog(this,
                     "Las contraseñas no coinciden.",
@@ -406,11 +501,17 @@ public class registro extends javax.swing.JFrame {
                 nombre, telefono, correo, direccion, cedula, pass1);
 
         if (ok) {
+            // Mensaje de éxito claro e intuitivo
+            String mensaje = "¡Registro completado con éxito!\n\n" +
+                             "IMPORTANTE: Su usuario para ingresar al sistema es:\n" +
+                             "--> " + nombre + " <--\n\n" +
+                             "Por favor, úselo tal cual lo escribió para iniciar sesión.";
+
             JOptionPane.showMessageDialog(this,
-                    "Registro completado con éxito.\nAhora puede iniciar sesión.",
-                    "Éxito",
+                    mensaje,
+                    "Registro Exitoso",
                     JOptionPane.INFORMATION_MESSAGE);
-            // Ir a login si quieres
+            
             new login().setVisible(true);
             this.dispose();
         } else {
@@ -421,6 +522,11 @@ public class registro extends javax.swing.JFrame {
         }
     
     }//GEN-LAST:event_jButton1ActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
+        new inicio().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton2ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -439,9 +545,42 @@ public class registro extends javax.swing.JFrame {
 
         java.awt.EventQueue.invokeLater(() -> new registro().setVisible(true));
     }
+    
+    // Método auxiliar para verificar seguridad de contraseña
+    private boolean esContrasenaSegura(String password) {
+        boolean tieneMayuscula = false;
+        boolean tieneNumero = false;
 
+        // Recorremos letra por letra
+        for (char c : password.toCharArray()) {
+            if (Character.isUpperCase(c)) {
+                tieneMayuscula = true;
+            }
+            if (Character.isDigit(c)) {
+                tieneNumero = true;
+            }
+        }
+        // Solo devuelve true si cumple AMBAS condiciones
+        return tieneMayuscula && tieneNumero;
+    }
+    
+    // Método auxiliar para validar el formato básico del correo
+    private boolean esCorreoValido(String correo) {
+        // Verifica que contenga '@' y también un punto '.'
+        // Además, verifica que la '@' no sea el primer ni el último caracter
+        return correo.contains("@") && 
+               correo.contains(".") && 
+               correo.indexOf("@") > 0 && 
+               correo.indexOf("@") < correo.length() - 1;
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
+    private javax.swing.JButton jButton2;
+    private javax.swing.JDialog jDialog1;
+    private javax.swing.JDialog jDialog2;
+    private javax.swing.JDialog jDialog3;
+    private javax.swing.JDialog jDialog4;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

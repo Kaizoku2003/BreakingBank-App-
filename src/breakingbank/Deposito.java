@@ -20,6 +20,11 @@ public class Deposito extends javax.swing.JFrame {
      */
     public Deposito() {
         initComponents();
+        setLocationRelativeTo(null); // Centrar ventana
+        
+        // --- AGREGAR ESTO ---
+        // Mensaje flotante (amarillo) al pasar el mouse
+        jTextField3.setToolTipText("Ingrese el monto solo con números enteros (sin puntos ni comas)");
     }
 
     /**
@@ -37,6 +42,7 @@ public class Deposito extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jTextField3 = new javax.swing.JTextField();
+        jButton3 = new javax.swing.JButton();
 
         javax.swing.GroupLayout jFrame1Layout = new javax.swing.GroupLayout(jFrame1.getContentPane());
         jFrame1.getContentPane().setLayout(jFrame1Layout);
@@ -65,7 +71,7 @@ public class Deposito extends javax.swing.JFrame {
         });
 
         jLabel3.setFont(new java.awt.Font("SansSerif", 0, 24)); // NOI18N
-        jLabel3.setText("Monto:");
+        jLabel3.setText("Monto a depositar:");
 
         jTextField3.setFont(new java.awt.Font("SansSerif", 0, 24)); // NOI18N
         jTextField3.addActionListener(new java.awt.event.ActionListener() {
@@ -83,7 +89,7 @@ public class Deposito extends javax.swing.JFrame {
                 .addComponent(jLabel3)
                 .addGap(18, 18, 18)
                 .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 287, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(79, Short.MAX_VALUE))
+                .addContainerGap(173, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -95,6 +101,14 @@ public class Deposito extends javax.swing.JFrame {
                 .addContainerGap(68, Short.MAX_VALUE))
         );
 
+        jButton3.setFont(new java.awt.Font("SansSerif", 0, 36)); // NOI18N
+        jButton3.setText("Atrás");
+        jButton3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton3ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -102,31 +116,30 @@ public class Deposito extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 788, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 841, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(86, 86, 86)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 374, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 374, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 374, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(132, 132, 132)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGap(133, 133, 133)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(23, 23, 23)
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 65, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 305, Short.MAX_VALUE)
+                .addGap(77, 77, 77)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton2)
-                .addGap(154, 154, 154))
-            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(layout.createSequentialGroup()
-                    .addGap(157, 157, 157)
-                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(275, Short.MAX_VALUE)))
+                .addGap(18, 18, 18)
+                .addComponent(jButton3)
+                .addContainerGap(137, Short.MAX_VALUE))
         );
 
         pack();
@@ -136,55 +149,77 @@ public class Deposito extends javax.swing.JFrame {
                                      
     String textoMonto = jTextField3.getText().trim();
 
-    if (textoMonto.isEmpty()) {
-        JOptionPane.showMessageDialog(this,
-                "Por favor, ingrese un monto.",
-                "Monto vacío",
-                JOptionPane.WARNING_MESSAGE);
-        return;
-    }
+        // 1. Validar si está vacío
+        if (textoMonto.isEmpty()) {
+            JOptionPane.showMessageDialog(this,
+                    "Por favor, ingrese un monto.",
+                    "Monto vacío",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
 
-    double monto;
-    try {
-        monto = Double.parseDouble(textoMonto);
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(this,
-                "El monto debe ser un número válido.",
-                "Monto inválido",
-                JOptionPane.ERROR_MESSAGE);
-        return;
-    }
+        // 2. Validar que sea "netamente numérico" (Sin puntos ni comas)
+        if (!esSoloNumeros(textoMonto)) {
+            JOptionPane.showMessageDialog(this,
+                    "El monto debe contener solo números enteros.\n" +
+                    "Por favor, no utilice puntos (.) ni comas (,).",
+                    "Formato Incorrecto",
+                    JOptionPane.WARNING_MESSAGE);
+            // Limpiamos el campo para evitar confusiones
+            jTextField3.setText("");
+            return;
+        }
 
-    if (monto <= 0) {
-        JOptionPane.showMessageDialog(this,
-                "El monto debe ser mayor que cero.",
-                "Monto inválido",
-                JOptionPane.WARNING_MESSAGE);
-        return;
-    }
+        // Convertimos a número
+        double monto = Double.parseDouble(textoMonto);
 
-    boolean ok = cuentaService.depositar(monto);
+        // 3. Validar que sea mayor a cero
+        if (monto <= 0) {
+            JOptionPane.showMessageDialog(this,
+                    "El monto a depositar debe ser mayor que cero.",
+                    "Monto inválido",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
 
-    if (!ok) {
-        JOptionPane.showMessageDialog(this,
-                "Ocurrió un error al realizar el depósito.\n¿Hay un usuario logueado?",
-                "Error",
-                JOptionPane.ERROR_MESSAGE);
-        return;
-    }
+        // 4. Validar Límite de 5.000.000
+        if (monto > 5000000) {
+            JOptionPane.showMessageDialog(this,
+                    "El límite máximo por operación es de 5.000.000.\n" +
+                    "Por favor, ingrese un monto menor.",
+                    "Límite Excedido",
+                    JOptionPane.WARNING_MESSAGE);
+            return;
+        }
 
-    JOptionPane.showMessageDialog(this,
-            "Depósito realizado con éxito.\nMonto: " + monto,
-            "Depósito exitoso",
-            JOptionPane.INFORMATION_MESSAGE);
+        // --- SI PASA TODO LO ANTERIOR, PROCEDEMOS ---
 
-    new Menu().setVisible(true);
-    this.dispose();   
+        boolean ok = cuentaService.depositar(monto);
+
+        if (!ok) {
+            JOptionPane.showMessageDialog(this,
+                    "Ocurrió un error al realizar el depósito.\n¿Hay un usuario logueado?",
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(this,
+                    "Depósito realizado con éxito.\nMonto acreditado: " + String.format("%.0f", monto),
+                    "Depósito Exitoso",
+                    JOptionPane.INFORMATION_MESSAGE);
+            
+            new Menu().setVisible(true);
+            this.dispose();
+        }
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void jTextField3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField3ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jTextField3ActionPerformed
+
+    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
+        new Menu().setVisible(true);
+        this.dispose();
+    }//GEN-LAST:event_jButton3ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -210,9 +245,15 @@ public class Deposito extends javax.swing.JFrame {
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> new Deposito().setVisible(true));
     }
+    
+    // Método auxiliar para validar que el texto sea SOLO números (sin puntos ni comas)
+    private boolean esSoloNumeros(String texto) {
+        return texto.matches("[0-9]+");
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
     private javax.swing.JFrame jFrame1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;

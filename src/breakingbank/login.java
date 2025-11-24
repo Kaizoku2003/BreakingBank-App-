@@ -174,6 +174,7 @@ public class login extends javax.swing.JFrame {
         Usuario u = authService.iniciarSesion(nombre, password);
 
         if (u != null) {
+            Usuario.usuarioLogueado = u;
             JOptionPane.showMessageDialog(this,
                     "Inicio de sesión exitoso. Bienvenido, " + u.getNombreCompleto() + "!",
                     "Bienvenido",

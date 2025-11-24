@@ -20,7 +20,7 @@ public class Usuario {
     private String direccion;
     private String cedula;
     private String password;
-    private double saldo; // 💰 saldo propio
+    private double saldo; // saldo propio
     private double deudaTarjeta;
     private double deudaTelefonia;
     private double deudaANDE;

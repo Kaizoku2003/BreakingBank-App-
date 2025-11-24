@@ -26,7 +26,7 @@ public class authService {
             return false; // ya existe
         }
 
-        Usuario u = new Usuario(nombre, telefono, correo, direccion, cedula, password, 0.0);
+        Usuario u = new Usuario(nombre, telefono, correo, direccion, cedula, password, 0.0, 0.0, 0.0, 0.0);
         return repo.guardar(u);
     }
 

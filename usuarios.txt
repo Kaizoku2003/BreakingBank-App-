@@ -1,3 +1,4 @@
-5171522;jesus centurion;0991200195;jdcenturion1@gmail.com;cañada del carmen 395;judinipudini22;6000000.0
-5175126;eduardo valdez;0992281605;lmfaoypeslalaculo;pene242123;culoculo10;0.0
-5149365;eduardo garcia;991849365;asdasd@gmail.com;los mangos 212;Abcd123;0.0
+5171522;jesus centurion;0991200195;jdcenturion1@gmail.com;cañada del carmen 395;judinipudini22;6000000.0;0.0;0.0;0.0
+5175126;eduardo valdez;0992281605;lmfaoypeslalaculo;pene242123;culoculo10;0.0;0.0;0.0;0.0
+5149365;eduardo garcia;991849365;asdasd@gmail.com;los mangos 212;Abcd123;0.0;0.0;0.0;0.0
+12345678;fabrizio;123456789;ffalcon@gmail.com;casa;Hola123;0.0;0.0;0.0;120000

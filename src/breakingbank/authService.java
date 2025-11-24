@@ -10,7 +10,8 @@ package breakingbank;
  * @author Fabrizio Falcón
  * @author Santino Gianninotto
  * @author Benjamín Ojeda
- *
+ */
+/**
  * clase encargada del servicio de autenticacion de usuarios
  */
 public class authService {

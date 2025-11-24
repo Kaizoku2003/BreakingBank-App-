@@ -10,7 +10,8 @@ package breakingbank;
  * @author Fabrizio Falcón
  * @author Santino Gianninoto
  * @author Benjamín Ojeda
- *
+ */
+/**
  * Clase encargada de manejar los datos de los usuarios
  */
 public class Usuario {

@@ -16,7 +16,7 @@ public class registro extends javax.swing.JFrame {
     
    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(registro.class.getName());
 
-    private final authService authService = new authService();
+    private final AuthService authService = new AuthService();
 
     public registro() {
         initComponents();
@@ -496,9 +496,12 @@ public class registro extends javax.swing.JFrame {
                     JOptionPane.ERROR_MESSAGE);
             return;
         }
-
+        
+        int numPin = (int) (Math.random() * 9000) + 1000;
+        String pinGenerado = String.valueOf(numPin);
+        
         boolean ok = authService.registrarUsuario(
-                nombre, telefono, correo, direccion, cedula, pass1);
+                nombre, telefono, correo, direccion, cedula, pass1, pinGenerado);
 
         if (ok) {
             // Mensaje de éxito claro e intuitivo
@@ -506,11 +509,17 @@ public class registro extends javax.swing.JFrame {
                              "IMPORTANTE: Su usuario para ingresar al sistema es:\n" +
                              "--> " + nombre + " <--\n\n" +
                              "Por favor, úselo tal cual lo escribió para iniciar sesión.";
-
+              
             JOptionPane.showMessageDialog(this,
                     mensaje,
                     "Registro Exitoso",
                     JOptionPane.INFORMATION_MESSAGE);
+            
+            String mensajeOTP = "IMPORTANTE: GUARDE ESTE OTP QUE SERVIRÁ COMO PIN DE VALIDACIÓN PARA OPERACIONES FUTURAS\n\n"
+                    + ">>>  " + pinGenerado + "  <<<";
+            
+            // WARNING_MESSAGE pone el ícono de alerta amarilla
+            JOptionPane.showMessageDialog(this, mensajeOTP, "CÓDIGO DE SEGURIDAD", JOptionPane.WARNING_MESSAGE);
             
             new login().setVisible(true);
             this.dispose();

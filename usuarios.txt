@@ -1,3 +1,0 @@
-6969696;tino;123;pene@gmail.com;mi casa;Pene1;9000.0;0.0;0.0;0.0;3979
-5171522;jesus;123;peneculo@gmail.com;mi casa;Pene1;11000.0;0.0;0.0;0.0;9876
-123;benja;123;correo@gmail.com;casa de benja;Contrasena1;0.0;0.0;0.0;0.0;8595

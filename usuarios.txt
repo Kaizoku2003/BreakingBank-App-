@@ -1,0 +1,2 @@
+6862241;tino;123456;hola1@gmail.com;micasa 324;Tino1;50000.0;0.0;0.0;0.0;6701
+5171522;jesus;154689;jdcenturion1@gmail.com;casacasa1;Portu2024;50000.0;0.0;0.0;0.0;1350

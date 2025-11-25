@@ -23,11 +23,11 @@ public class CuentaService {
 
     // Saldo del usuario que está logueado
     public double obtenerSaldoActual() {
-        Usuario u = authService.getUsuarioActual();
-        if (u == null) {
-            return 0.0;
-        }
-        return u.getSaldo();
+    Usuario u = AuthService.getUsuarioActual();
+    if (u == null) {
+        return 0.0;
+    }
+    return u.getSaldo();
     }
 
     public boolean depositar(double monto) {
@@ -35,7 +35,7 @@ public class CuentaService {
             return false;
         }
 
-        Usuario u = authService.getUsuarioActual();
+        Usuario u = AuthService.getUsuarioActual();
         if (u == null) {
             return false; // nadie logueado
         }
@@ -46,9 +46,7 @@ public class CuentaService {
         // Guardar en archivo
         return repo.actualizarUsuario(u);
     }
-    // Necesitamos instanciar authService si no es estático
-    private final AuthService authService = new AuthService();
-
+    
     public boolean transferir(String cedulaOrigen, String cedulaDestino, double monto) {
         // 1. Validaciones básicas
         if (monto <= 0) {
@@ -81,6 +79,11 @@ public class CuentaService {
         // Guardar cambios de AMBOS usuarios
         boolean guardadoOrigen = repo.actualizarUsuario(origen);
         boolean guardadoDestino = repo.actualizarUsuario(destino);
+        
+         if (guardadoOrigen && AuthService.getUsuarioActual() != null && 
+        AuthService.getUsuarioActual().getCedula().equals(cedulaOrigen)) {
+        AuthService.setUsuarioActual(origen);
+    }
 
         return guardadoOrigen && guardadoDestino;
     }

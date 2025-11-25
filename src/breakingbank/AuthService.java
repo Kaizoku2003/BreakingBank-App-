@@ -48,4 +48,8 @@ public class AuthService {
     public static void cerrarSesion() {
         usuarioActual = null;
     }
+    
+    public static void setUsuarioActual(Usuario usuario) {
+        usuarioActual = usuario;
+    }
 }
